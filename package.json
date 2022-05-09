@@ -1,0 +1,27 @@
+{
+  "name": "reviewhelper",
+  "version": "0.1.0",
+  "description": "A Review Notion database Reminder",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JimSunJing/ReviewHelper.git"
+  },
+  "keywords": [
+    "notion"
+  ],
+  "author": "JimSunJing",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JimSunJing/ReviewHelper/issues"
+  },
+  "homepage": "https://github.com/JimSunJing/ReviewHelper#readme",
+  "dependencies": {
+    "@notionhq/client": "^1.0.4",
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.0"
+  }
+}
