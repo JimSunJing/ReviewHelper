@@ -28,8 +28,7 @@ function getNotionProperty(obj, colName) {
     prop = obj.properties[String(colName)];
     // console.log(`get prop! ${prop}`);
   }
-  let type = prop.type;
-  switch (type) {
+  switch (prop.type) {
     case 'title':
       return prop.title[0].plain_text;
       break;
@@ -37,7 +36,21 @@ function getNotionProperty(obj, colName) {
       return prop.rich_text[0] === undefined 
         ? `"${String(colName)}" is empty` : prop.rich_text[0].plain_text;
       break
-  
+    case 'checkbox':
+      return prop.checkbox === true;
+      break
+    case 'select':
+      return prop.select === undefined 
+        ? `"${String(colName)}" is empty`
+        : prop.select.name;
+      break
+    case 'created_time':
+      return prop.created_time;
+      break
+    case 'url':
+      return prop.url === undefined || prop.url === null
+        ? 'URL property is empty' : prop.url
+      break
     default:
       break;
   }
