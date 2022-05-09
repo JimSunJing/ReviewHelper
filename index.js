@@ -32,7 +32,10 @@ reqInstance.post(
 ).then((response) => {
   // console.log(response.data);
   // 随机选择 query 返回列表中的 page
-  let randRes = randomSelect(response.data.results)
+  let randRes;
+  if (typeof response.data.results !== 'undefined'){
+    randRes = randomSelect(response.data.results)
+  }
   // console.log(randRes);
   // 查看 page 的标题
   console.log(getNotionProperty(randRes, 'Name'));
