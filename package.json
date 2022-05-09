@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/JimSunJing/ReviewHelper#readme",
   "dependencies": {
-    "@notionhq/client": "^1.0.4",
     "axios": "^0.27.2",
     "dotenv": "^16.0.0"
   }
