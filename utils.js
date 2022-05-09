@@ -34,14 +34,14 @@ function getNotionProperty(obj, colName) {
       break;
     case 'rich_text':
       return prop.rich_text[0] === undefined 
-        ? `"${String(colName)}" is empty` : prop.rich_text[0].plain_text;
+        ? `'${String(colName)}' is empty` : prop.rich_text[0].plain_text;
       break
     case 'checkbox':
       return prop.checkbox === true;
       break
     case 'select':
       return prop.select === undefined 
-        ? `"${String(colName)}" is empty`
+        ? `'${String(colName)}'\(select\) is empty`
         : prop.select.name;
       break
     case 'created_time':
@@ -49,7 +49,20 @@ function getNotionProperty(obj, colName) {
       break
     case 'url':
       return prop.url === undefined || prop.url === null
-        ? 'URL property is empty' : prop.url
+        ? `'${String(colName)}'\(url\) is empty` : prop.url
+      break
+    case 'date':
+      return prop.date === null
+        ? `'${String(colName)}'\(date\) is empty` : prop.date
+      break
+    case 'number':
+      return prop.number
+      break
+    case 'phone':
+      return prop.phone_number
+      break
+    case 'email':
+      return prop.email
       break
     default:
       break;
