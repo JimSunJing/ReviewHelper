@@ -75,7 +75,7 @@ const QUERY_KEYS = ['Name', 'Intro', 'Created'];
 function genMail(ResultArray) {
   let message = '';
   // This Email message will be sent using https://github.com/dawidd6/action-send-mail
-  message += '# It\'s Time to Review Your Notion Notes!';
+  message += '# It\'s Time to Review Your Notion Notes!%0A';
   for (let i = 0; i < ResultArray.length; i++) {
     const note = ResultArray[i];
     // console.log(note);
