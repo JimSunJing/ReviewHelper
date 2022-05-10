@@ -8,7 +8,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  buildQueryMail:
 
     runs-on: ubuntu-latest
 
@@ -57,7 +57,7 @@ jobs:
         body: |
           ${{ steps.message.outputs.message }}
         # Optional converting Markdown to HTML (set content_type to text/html too):
-        # convert_markdown: true
+        convert_markdown: true
         # Optional HTML body read from file:
         #html_body: file://README.html
         # Optional carbon copy recipients:
