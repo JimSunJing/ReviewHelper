@@ -54,7 +54,8 @@ jobs:
         # Optional whether this connection use TLS (default is true if server_port is 465)
         secure: true
         # Optional plain body:
-        body: $${{ steps.message.outputs.message }}
+        body: |
+          $${{ steps.message.outputs.message }}
         # Optional converting Markdown to HTML (set content_type to text/html too):
         convert_markdown: true
         # Optional HTML body read from file:
