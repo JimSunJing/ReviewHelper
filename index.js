@@ -67,7 +67,7 @@ const QUERY_KEYS = ['Name', 'Intro', 'Created'];
   // console.log(results);
   // set output for other jobs
   // see https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs
-  console.log(`::set-output name=message::${genMail(results)}`);
+  console.log(`::set-output name=message::`+genMail(results));
   // console.log('Wanted Review Reminder Content Generated.');
 })();
 
@@ -78,9 +78,9 @@ function genMail(ResultArray) {
   for (let i = 0; i < ResultArray.length; i++) {
     const note = ResultArray[i];
     // console.log(note);
-    message += `\n${i+1}. `
+    message += `\\n${i+1}. `
     for (k in note) {
-      message += `${k}: ${note[k]}\n\t`;
+      message += `${k}: ${note[k]}\\n`;
     }
   }
   return message;
