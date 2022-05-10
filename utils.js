@@ -64,6 +64,7 @@ function getNotionProperty(obj, colName) {
     case 'email':
       return prop.email
       break
+      
     default:
       break;
   }
