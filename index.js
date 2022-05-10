@@ -9,52 +9,76 @@ const BASE_URL = "https://api.notion.com/";
 
 // query settings
 // need to think about how to adjust it 
-const QUERY_NUM = 2
-const QUERY_KEYS = ['Name', 'Intro', 'Created']
+const QUERY_NUM = 2;
+const QUERY_KEYS = ['Name', 'Intro', 'Created'];
 
-// Query
-let queryURL = `${BASE_URL}v1/databases/${DATABASE_ID}/query`;
+(async () => {
+  // Query
+  let queryURL = `${BASE_URL}v1/databases/${DATABASE_ID}/query`;
 
-// set notion API integration auth header
-let headers = {
-  Authorization: `Bearer ${TOKEN}`,
-  "Notion-Version": "2022-02-22",
-  "Content-Type": "application/json"
-};
+  // set notion API integration auth header
+  let headers = {
+    Authorization: `Bearer ${TOKEN}`,
+    "Notion-Version": "2022-02-22",
+    "Content-Type": "application/json"
+  };
 
-let sorts = [{
-  "property": "Created",
-  "direction": "descending"
-}]
+  let sorts = [{
+    "property": "Created",
+    "direction": "descending"
+  }]
 
-// create a axios session
-let reqInstance = axios.create({
-  headers
-})
+  // create a axios session
+  let reqInstance = axios.create({
+    headers
+  })
 
-// Database Query POST Request
-// see https://developers.notion.com/reference/post-database-query
-reqInstance.post(
-  queryURL,
-  {sorts}
-).then((response) => {
-  // console.log(response.data);
-  let randRes = [];
-  if (typeof response.data.results !== 'undefined'){
-    for (let i = 0; i < QUERY_NUM; i++) {
-      // get random selected item from query
-      let t = randomSelect(response.data.results);
-      // extract wanted values
-      QUERY_KEYS.forEach(key => {
-        console.log(`(${i}, ${key}), key type:${typeof key}`);
-        randRes[i] === undefined ? randRes[i] = {} : 2+2 === 5
-        randRes[i][key] = getNotionProperty(t, key);
-      });
-      // add url in every item
-      randRes[i].url = t.url;
+  // Database Query POST Request
+  // see https://developers.notion.com/reference/post-database-query
+  let results;
+  results = await reqInstance.post(
+    queryURL,
+    {sorts}
+  ).then((response) => {
+    // console.log(response.data);
+    let queryRes = [];
+    if (typeof response.data.results !== 'undefined'){
+      for (let i = 0; i < QUERY_NUM; i++) {
+        // get random selected item from query
+        let t = randomSelect(response.data.results);
+        // extract wanted values
+        QUERY_KEYS.forEach(key => {
+          // console.log(`(${i}, ${key}), key type:${typeof key}`);
+          if (queryRes[i] === undefined) queryRes[i] = {};
+          queryRes[i][key] = getNotionProperty(t, key);
+        });
+        // add url in every item
+        queryRes[i].url = t.url;
+      }
     }
+    // console.log(queryRes);
+    return queryRes;
+  }).catch((error) => {
+    console.log(error);
+    process.exit(1);
+  });
+
+  // generate email content
+  console.log(results);
+  console.log(`email content:\n  ${genMail(results)}`);
+
+  console.log('Wanted Review Reminder Pushed.');
+})();
+
+function genMail(ResultArray) {
+  let message = '';
+  // This Email message will be sent using https://github.com/dawidd6/action-send-mail
+  // So need to make the context fit YAML style(2 space intent)
+  message += '# It\'s Time to Review Your Notion Notes!\n  ';
+  for (let i = 0; i < ResultArray.length; i++) {
+    const note = ResultArray[i];
+    // console.log(note);
+    message += `${i+1}. ${JSON.stringify(note)}\n  `;
   }
-  console.log(randRes);
-}).catch((error) => {
-  console.log(error);
-})
+  return message;
+}
