@@ -67,7 +67,8 @@ const QUERY_KEYS = ['Name', 'Intro', 'Created'];
   // console.log(results);
   // set output for other jobs
   // see https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs
-  console.log(`::set-output name=message::`+genMail(results));
+  // console.log(`::set-output name=message::`+genMail(results));
+  console.log(`::set-output name=message::`+'<h1>test html message</h1></br><p>here is the context</p>');
   // console.log('Wanted Review Reminder Content Generated.');
 })();
 
