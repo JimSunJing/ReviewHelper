@@ -55,7 +55,7 @@ jobs:
         secure: true
         # Optional plain body:
         body: |
-          $${{ steps.message.outputs.message }}
+          ${{ steps.message.outputs.message }}
         # Optional converting Markdown to HTML (set content_type to text/html too):
         # convert_markdown: true
         # Optional HTML body read from file:
