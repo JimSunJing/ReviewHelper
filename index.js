@@ -64,21 +64,24 @@ const QUERY_KEYS = ['Name', 'Intro', 'Created'];
   });
 
   // generate email content
-  console.log(results);
-  console.log(`email content:\n  ${genMail(results)}`);
-
-  console.log('Wanted Review Reminder Pushed.');
+  // console.log(results);
+  // set output for other jobs
+  // see https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs
+  console.log(`::set-output name=message::${genMail(results)}`);
+  // console.log('Wanted Review Reminder Content Generated.');
 })();
 
 function genMail(ResultArray) {
   let message = '';
   // This Email message will be sent using https://github.com/dawidd6/action-send-mail
-  // So need to make the context fit YAML style(2 space intent)
-  message += '# It\'s Time to Review Your Notion Notes!\n  ';
+  message += '# It\'s Time to Review Your Notion Notes!';
   for (let i = 0; i < ResultArray.length; i++) {
     const note = ResultArray[i];
     // console.log(note);
-    message += `${i+1}. ${JSON.stringify(note)}\n  `;
+    message += `\n${i+1}. `
+    for (k in note) {
+      message += `${k}: ${note[k]}\n\t`;
+    }
   }
   return message;
 }
