@@ -64,6 +64,18 @@ function getNotionProperty(obj, colName) {
     case 'email':
       return prop.email
       break
+    case 'multi_select':
+      let names = [];
+      if (prop.multi_select === undefined || prop.multi_select.length === 0){
+        return `'${String(colName)}'\(date\) is empty`;
+      } else {
+        for (let i = 0; i < prop.multi_select.length; i++) {
+          const select = prop.multi_select[i];
+          names.push(select.name);
+        }
+      }
+      return names;
+      break
       
     default:
       break;
