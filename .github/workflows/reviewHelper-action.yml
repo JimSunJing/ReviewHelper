@@ -51,7 +51,7 @@ jobs:
         # Required mail subject:
         subject: Notion Review Helper Reminder
         # Required recipients' addresses:
-        to: frankocean6428@outlook.com
+        to: ${{secrets.MAIL_RECIPIENT}}
         # Required sender full name (address can be skipped):
         from: Review Helper(bot) # <user@example.com>
         # Optional whether this connection use TLS (default is true if server_port is 465)
