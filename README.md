@@ -26,6 +26,7 @@ In `index.js`
 
 - This action default sends 2 notes everytime. You can change that by setting `const QUERY_NUM` in line 12
 - You need to change the `const QUERY_KEYS` to fit your database column names. 
+- Change or remove your sort setting in line 27. Need to match your target column name.
 
 # Chinese Guide (汉语说明)
 
