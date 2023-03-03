@@ -1,6 +1,6 @@
-const axios =  require('axios');
-require('dotenv').config();
-const {randomSelect, getNotionProperty} = require('./utils')
+const axios = require("axios");
+require("dotenv").config();
+const { randomSelect, getNotionProperty } = require("./utils");
 
 // envirment val
 const DATABASE_ID = process.env.DATABASE_ID;
@@ -8,9 +8,9 @@ const TOKEN = process.env.TOKEN;
 const BASE_URL = "https://api.notion.com/";
 
 // query settings
-// need to think about how to adjust it 
+// need to think about how to adjust it
 const QUERY_NUM = 2;
-const QUERY_KEYS = ['Name', 'Intro', 'Created'];
+const QUERY_KEYS = ["Name", "Intro", "Created"];
 
 (async () => {
   // Query
@@ -20,48 +20,51 @@ const QUERY_KEYS = ['Name', 'Intro', 'Created'];
   let headers = {
     Authorization: `Bearer ${TOKEN}`,
     "Notion-Version": "2022-02-22",
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   };
 
-  let sorts = [{
-    "property": "Created",
-    "direction": "descending"
-  }]
+  // update your sort setting in here
+  let sorts = [
+    {
+      property: "Created",
+      direction: "descending",
+    },
+  ];
 
   // create a axios session
   let reqInstance = axios.create({
-    headers
-  })
+    headers,
+  });
 
   // Database Query POST Request
   // see https://developers.notion.com/reference/post-database-query
   let results;
-  results = await reqInstance.post(
-    queryURL,
-    {sorts}
-  ).then((response) => {
-    // console.log(response.data);
-    let queryRes = [];
-    if (typeof response.data.results !== 'undefined'){
-      for (let i = 0; i < QUERY_NUM; i++) {
-        // get random selected item from query
-        let t = randomSelect(response.data.results);
-        // extract wanted values
-        QUERY_KEYS.forEach(key => {
-          // console.log(`(${i}, ${key}), key type:${typeof key}`);
-          if (queryRes[i] === undefined) queryRes[i] = {};
-          queryRes[i][key] = getNotionProperty(t, key);
-        });
-        // add url in every item
-        queryRes[i].url = t.url;
+  results = await reqInstance
+    .post(queryURL, { sorts })
+    .then((response) => {
+      // console.log(response.data);
+      let queryRes = [];
+      if (typeof response.data.results !== "undefined") {
+        for (let i = 0; i < QUERY_NUM; i++) {
+          // get random selected item from query
+          let t = randomSelect(response.data.results);
+          // extract wanted values
+          QUERY_KEYS.forEach((key) => {
+            // console.log(`(${i}, ${key}), key type:${typeof key}`);
+            if (queryRes[i] === undefined) queryRes[i] = {};
+            queryRes[i][key] = getNotionProperty(t, key);
+          });
+          // add url in every item
+          queryRes[i].url = t.url;
+        }
       }
-    }
-    // console.log(queryRes);
-    return queryRes;
-  }).catch((error) => {
-    console.log(error);
-    process.exit(1);
-  });
+      // console.log(queryRes);
+      return queryRes;
+    })
+    .catch((error) => {
+      console.log(error);
+      process.exit(1);
+    });
 
   // generate email content
   // console.log(results);
@@ -73,13 +76,13 @@ const QUERY_KEYS = ['Name', 'Intro', 'Created'];
 })();
 
 function genMail(ResultArray) {
-  let message = '';
+  let message = "";
   // This Email message will be sent using https://github.com/dawidd6/action-send-mail
-  message += '# It\'s Time to Review Your Notion Notes!%0A';
+  message += "# It's Time to Review Your Notion Notes!%0A";
   for (let i = 0; i < ResultArray.length; i++) {
     const note = ResultArray[i];
     // console.log(note);
-    message += `%0A${i+1}. `
+    message += `%0A${i + 1}. `;
     for (k in note) {
       message += `${k}: ${note[k]}%0A`;
     }
