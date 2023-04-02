@@ -1,10 +1,11 @@
 const { floor, random } = Math;
+var moment = require("moment");
 
 // 输入数组并随机返回
 function randomSelect(arr) {
   // 非空判断
   if (typeof arr === "undefined") {
-    console.log(arr);
+    // console.log(arr);
     return "no data";
   }
   let len = arr.length;
@@ -26,7 +27,7 @@ function getNotionProperty(obj, colName) {
     return "No properties";
   } else {
     prop = obj.properties[String(colName)];
-    // console.log(`get prop! ${prop}`);
+    // console.log(`get prop!`, prop);
   }
   switch (prop.type) {
     case "title":
@@ -35,10 +36,16 @@ function getNotionProperty(obj, colName) {
         .join(" ");
       break;
     case "rich_text":
-      const texts = prop.rich_text
+      const rich_text = prop.rich_text
         .map((item) => item.plain_text.replace(/\n/g, ""))
         .join(" ");
-      return texts ? `'${String(colName)}' is empty` : texts;
+      return rich_text ? rich_text : `'${String(colName)}' is empty`;
+      break;
+    case "text":
+      const text = prop.rich_text
+        .map((item) => item.plain_text.replace(/\n/g, ""))
+        .join(" ");
+      return text ? text : `'${String(colName)}' is empty`;
       break;
     case "checkbox":
       return prop.checkbox === true;
@@ -49,7 +56,10 @@ function getNotionProperty(obj, colName) {
         : prop.select.name;
       break;
     case "created_time":
-      return prop.created_time;
+      return moment(prop.created_time).fromNow();
+      break;
+    case "last_edited_time":
+      return moment(prop.last_edited_time).fromNow();
       break;
     case "url":
       return prop.url === undefined || prop.url === null
@@ -59,7 +69,7 @@ function getNotionProperty(obj, colName) {
     case "date":
       return prop.date === null
         ? `'${String(colName)}'\(date\) is empty`
-        : prop.date;
+        : moment(prop.date).format("YYYY MMM d");
       break;
     case "number":
       return prop.number;
