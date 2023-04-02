@@ -35,11 +35,9 @@ function getNotionProperty(obj, colName) {
         .join(" ");
       break;
     case "rich_text":
-      const texts =
-        prop.rich_text[0] &&
-        prop.rich_text
-          .map((item) => item.plain_text.replace(/\n/g, ""))
-          .join(" ");
+      const texts = prop.rich_text
+        .map((item) => item.plain_text.replace(/\n/g, ""))
+        .join(" ");
       return texts ? `'${String(colName)}' is empty` : texts;
       break;
     case "checkbox":
