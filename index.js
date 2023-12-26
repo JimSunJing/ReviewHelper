@@ -8,8 +8,9 @@ const TOKEN = process.env.TOKEN;
 const BASE_URL = "https://api.notion.com/";
 
 // query settings
-// need to think about how to adjust it
-const QUERY_NUM = 3;
+// QUERY_NUM: amount of notes query per time
+// QUERY_KEYS: notion database header(column name) to query
+const QUERY_NUM = 2;
 const QUERY_KEYS = ["Name", "Intro", "Created"];
 
 (async () => {
